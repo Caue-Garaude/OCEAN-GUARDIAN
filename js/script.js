@@ -15,6 +15,7 @@ function validateLogin() {
         return false;
     }
 }
+
 document.addEventListener("DOMContentLoaded", function () {
     const carousels = document.querySelectorAll(".carousel");
 
@@ -22,10 +23,13 @@ document.addEventListener("DOMContentLoaded", function () {
         const prevButton = carousel.querySelector(".prev");
         const nextButton = carousel.querySelector(".next");
         const images = carousel.querySelector(".carousel-images");
-        const imageWidth = carousel.querySelector("img").clientWidth;
         let currentIndex = 0;
 
-        // Função para mover para a próxima imagem
+        function updateImagePosition() {
+            const imageWidth = carousel.querySelector("img").clientWidth;
+            images.style.transform = `translateX(${-currentIndex * imageWidth}px)`;
+        }
+
         function nextImage() {
             if (currentIndex < images.children.length - 1) {
                 currentIndex++;
@@ -33,7 +37,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
 
-        // Função para mover para a imagem anterior
         function prevImage() {
             if (currentIndex > 0) {
                 currentIndex--;
@@ -41,19 +44,9 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
 
-        // Função para atualizar a posição das imagens
-        function updateImagePosition() {
-            images.style.transform = `translateX(${-currentIndex * imageWidth}px)`;
-        }
+        nextButton.addEventListener("click", nextImage);
+        prevButton.addEventListener("click", prevImage);
 
-        // Event listener para o botão "next"
-        nextButton.addEventListener("click", function () {
-            nextImage();
-        });
-
-        // Event listener para o botão "prev"
-        prevButton.addEventListener("click", function () {
-            prevImage();
-        });
+        window.addEventListener("resize", updateImagePosition);
     });
 });
