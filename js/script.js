@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
         let currentIndex = 0;
 
         function updateImagePosition() {
-            const imageWidth = carousel.querySelector("img").clientWidth;
+            const imageWidth = carousel.clientWidth; // Use the width of the carousel container
             images.style.transform = `translateX(${-currentIndex * imageWidth}px)`;
         }
 
@@ -48,5 +48,21 @@ document.addEventListener("DOMContentLoaded", function () {
         prevButton.addEventListener("click", prevImage);
 
         window.addEventListener("resize", updateImagePosition);
+
+        // Lazy load sections with animation
+        const sections = document.querySelectorAll('section');
+        const loginSection = document.querySelector('#login');
+
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        sections.forEach(section => observer.observe(section));
+        observer.observe(loginSection);
     });
 });
